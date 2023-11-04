@@ -1,0 +1,119 @@
+[gd_scene load_steps=19 format=3 uid="uid://cmtb33pnt71hw"]
+
+[ext_resource type="Script" path="res://Frog.gd" id="1_7j7r0"]
+[ext_resource type="Texture2D" uid="uid://bpuonv3bmgjem" path="res://sprites/frog/idle/frog-idle-1.png" id="1_f1hun"]
+[ext_resource type="Texture2D" uid="uid://cmjmhrlpmh1u4" path="res://sprites/enemy-death/enemy-death-1.png" id="2_tbkic"]
+[ext_resource type="Texture2D" uid="uid://fnwepwkua5th" path="res://sprites/frog/idle/frog-idle-2.png" id="2_y08v7"]
+[ext_resource type="Texture2D" uid="uid://cxxqbu6qucxwg" path="res://sprites/frog/idle/frog-idle-3.png" id="3_jewnl"]
+[ext_resource type="Texture2D" uid="uid://1kj2bgeo7bby" path="res://sprites/enemy-death/enemy-death-2.png" id="3_tsgs4"]
+[ext_resource type="Texture2D" uid="uid://dpc11o38v1sd2" path="res://sprites/frog/idle/frog-idle-4.png" id="4_f17u3"]
+[ext_resource type="Texture2D" uid="uid://bupx7f6ulbyyw" path="res://sprites/enemy-death/enemy-death-3.png" id="4_jklsk"]
+[ext_resource type="Texture2D" uid="uid://difvlwa08qf8c" path="res://sprites/frog/jump/frog-jump-1.png" id="5_0wrl5"]
+[ext_resource type="Texture2D" uid="uid://cxcsobp2meuk4" path="res://sprites/enemy-death/enemy-death-4.png" id="5_uqkfa"]
+[ext_resource type="Texture2D" uid="uid://cdgseqo8khkis" path="res://sprites/enemy-death/enemy-death-5.png" id="6_5aixd"]
+[ext_resource type="Texture2D" uid="uid://htnue86tnk6f" path="res://sprites/frog/jump/frog-jump-2.png" id="6_fiyxm"]
+[ext_resource type="Texture2D" uid="uid://m45pcddgnvos" path="res://sprites/enemy-death/enemy-death-6.png" id="7_4x84h"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4fjeg"]
+size = Vector2(17, 15)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4qbdl"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_tbkic")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_tsgs4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_jklsk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_uqkfa")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_5aixd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_4x84h")
+}],
+"loop": false,
+"name": &"Death",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 2.0,
+"texture": ExtResource("1_f1hun")
+}, {
+"duration": 2.0,
+"texture": ExtResource("2_y08v7")
+}, {
+"duration": 2.0,
+"texture": ExtResource("3_jewnl")
+}, {
+"duration": 2.0,
+"texture": ExtResource("4_f17u3")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_0wrl5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_fiyxm")
+}],
+"loop": true,
+"name": &"Jump",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_14b7g"]
+radius = 128.25
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4ksx5"]
+size = Vector2(14.875, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3xa78"]
+size = Vector2(24, 13)
+
+[node name="Frog" type="CharacterBody2D"]
+script = ExtResource("1_7j7r0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(0.5, 0.5)
+shape = SubResource("RectangleShape2D_4fjeg")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(1, -2)
+sprite_frames = SubResource("SpriteFrames_4qbdl")
+animation = &"Idle"
+
+[node name="PlayerDetection" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetection"]
+visible = false
+shape = SubResource("CircleShape2D_14b7g")
+metadata/_edit_lock_ = true
+
+[node name="PlayerDie" type="Area2D" parent="."]
+position = Vector2(1, 2)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDie"]
+position = Vector2(-0.5625, -4)
+shape = SubResource("RectangleShape2D_4ksx5")
+
+[node name="PlayerCollision" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerCollision"]
+position = Vector2(0, 2.5)
+shape = SubResource("RectangleShape2D_3xa78")
+
+[connection signal="body_entered" from="PlayerDetection" to="." method="_on_player_detection_body_entered"]
+[connection signal="body_exited" from="PlayerDetection" to="." method="_on_player_detection_body_exited"]
+[connection signal="body_entered" from="PlayerDie" to="." method="_on_player_die_body_entered"]
+[connection signal="body_entered" from="PlayerCollision" to="." method="_on_player_collision_body_entered"]

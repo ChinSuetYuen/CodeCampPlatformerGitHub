@@ -1,0 +1,11 @@
+res://main.tscn
+res://Player/player.gd
+res://world.tscn
+res://Player/player.tscn
+res://BG.tscn
+res://Frog.tscn
+res://Global/Game.gd
+res://Global/Utils.gd
+res://main.gd
+res://Frog.gd
+res://Collectibles/Cherry.tscn
